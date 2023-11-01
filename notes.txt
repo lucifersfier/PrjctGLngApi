@@ -1,0 +1,101 @@
+***************************   project 1   *********************************
+
+1) -  HTTP: Hypertext Transfer Protocol (HTTP) is an application protocol for distributed, collaborative,
+      hypermedia information systems. It is the foundation of data communication on the World Wide Web.
+
+2) -  HTTP Server: An HTTP server is a software application that serves HTTP requests.
+      It listens for incoming requests from clients (web browsers, mobile apps, etc.)
+      and responds with the requested resources.
+
+3) -  Request: An HTTP request is a message sent by a client to a server,
+      asking for a specific action to be performed. It consists of a request line, headers,
+      and an optional message body.
+
+4) -  Response: An HTTP response is a message sent by a server to a client in response to its request.
+      It contains the requested resource, status code, headers, and an optional message body.
+
+-------------->>>>          Code Structure
+
+(a) - Import necessary package
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+)
+
+(b) - Define the formHandler function:
+
+func formHandler(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		fmt.Fprintf(w, "ParseForm() err: %v", err)
+		return
+	}
+	fmt.Fprintf(w, "POST request successful")
+	name := r.FormValue("name")
+	address := r.FormValue("address")
+	fmt.Fprintf(w, "Name=%s\n", name)
+	fmt.Fprintf(w, "Address=%s\n", address)
+}
+
+The formHandler function handles the "/form" route. It parses the form data from the request, retrieves the values of the "name" and "address" fields, and writes a response with the values.
+
+(c) - Define the helloHandler function:
+
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/hello" {
+		http.Error(w, "404 Not Found", http.StatusNotFound)
+		return
+	}
+	if r.Method != "GET" {
+		http.Error(w, "Method is not supported", http.StatusNotFound)
+		return
+	}
+	fmt.Fprintf(w, "hello!")
+}
+
+The helloHandler function handles the "/hello" route. It checks if the request path is "/hello" and the request method is GET. If not, it returns a 404 Not Found error. Otherwise, it writes a response with the message "hello!".
+
+(d) - Define the main function:
+
+func main() {
+	fileServer := http.FileServer(http.Dir("./static"))
+	http.Handle("/", fileServer)
+	http.HandleFunc("/form", formHandler)
+	http.HandleFunc("/hello", helloHandler)
+
+	fmt.Printf("Starting server at port 8080\n")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
+	}
+}
+
+The main function sets up the HTTP server. It creates a file server to serve static files from the "./static" directory. It then registers the formHandler and helloHandler functions to handle the "/form" and "/hello" routes, respectively. Finally, it starts the server on port 8080 and logs any errors that occur.
+
+####  -->>   Code Examples--->>>
+
+Let's see some examples of how this code can be used:
+
+(a) - Handling a form submission:
+
+<form action="/form" method="POST">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name"><br><br>
+  <label for="address">Address:</label>
+  <input type="text" id="address" name="address"><br><br>
+  <input type="submit" value="Submit">
+</form>
+When the form is submitted, the formHandler function will be called. It will parse the form data
+and write a response with the submitted name and address.
+
+Accessing the "/hello" route:
+GET /hello HTTP/1.1
+Host: localhost:8080
+Sending a GET request to the "/hello" route will trigger the helloHandler function,
+which will write a response with the message "hello!".
+
+## -->> Conclusion
+
+In this code example, we learned how to handle form and hello requests in Go using the net/http package.
+We explored the structure of the code and the key concepts involved. We also saw some examples of how to
+interact with the server.
