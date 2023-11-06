@@ -1,0 +1,25 @@
+1) - first we will import some modules
+
+        (a) - go mod init github.com/directory_name
+              This command initializes a new module in the specified directory and adds it to the build list.
+              The module path is used as an identifier.
+
+        (b) - the first package that i need is a gorm package 
+              go get github.com/jinzhu/gorm which will help me to interact with my database.
+
+        (c) - we need mysql package inside gorm because gorm is an ORM it helps you to interact with sqlite and 
+              postgres go get github.com/jinzhu/gorm/dialects/mysql.
+        
+        (d) - we need to install gorilla mux package since we need to use that for our routes.
+
+        (e) - we create two folders cmd and pkg 
+
+        (f) - i have created main.go file inside the main folder which is present inside the cmd folder.
+
+        (g) - now created five folders named config, controllers, utils, models and routes inside the pkg folder.
+
+        (h) - now created Somename.go file in each folder in the pkf directory.
+
+        (i) - Going to start with the routes >> bookstore_route.go 
+
+                (i) -  
